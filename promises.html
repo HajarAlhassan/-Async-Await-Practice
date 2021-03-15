@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Async/Await Practice</title>
+</head>
+
+<body>
+
+    <label for="city">Enter Your City:</label>
+    <input type="text" name="city" id="cityInput"><button type="button" id="getCity"> Get GEO</button>
+    <div id="root"
+        style="font-size: larger;background-color: blanchedalmond;width:400px;height: 100px;text-align: center;">
+    </div>
+    <script>
+   
+       
+
+
+   //This function returns a resolve with arandom number
+
+        function getRandomNumber() {
+            let promise = new Promise((resolve, reject) => {
+                setTimeout(() => resolve(Math.random()), 5000);
+
+            })
+            return promise
+        }
+        //This function invokes the getRandomNumber function, awaiting the random number, and printing that to the console.
+        async function asyncFunction() {
+            await getRandomNumber().then(result => console.log(result));
+
+        }
+        //Invoking  'asyncFunction'  function
+        asyncFunction()
+
+
+
+
+
+   //Fetch remote data using async/await
+        async function showCity(cityName) {
+            let response = await fetch(`https://geocode.xyz/${cityName}?json=1`);
+            let city = await response.json();
+            let text = `<br>The latt of ${cityName} is: ${city.latt} <br>The Longt of ${cityName} is: ${city.longt}`
+            document.getElementById("root").innerHTML = text
+        }
+
+
+        //Invoke the async function and get city from an inputText
+        document.getElementById("getCity").addEventListener("click", function () {
+            let citName = document.getElementById("cityInput").value;
+            showCity(citName)
+        })
+    </script>
+
+
+</body>
+
+</html>
